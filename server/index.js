@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
 const NodeCache = require("node-cache");
+
 const cache = new NodeCache({ stdTTL: 20, checkperiod: 24 });
 
 const marvelKeys = JSON.parse(fs.readFileSync("keys/keys.json")).keys;
@@ -17,10 +18,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(pino);
 
-app.get("/api/series/title", (req, res) => {
+app.get("/api/character", (req, res) => {
   const name = req.query.name || "spider-man";
-  marvel.series
-    .findByTitle(name)
+  marvel.characters
+    .findByName(name)
     .then(response => {
       if (cache.get(name)) {
         return Promise.resolve(response); // retrieve cached response
