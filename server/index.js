@@ -1,27 +1,29 @@
 const fs = require("fs");
-const api = require("marvel-api");
 const express = require("express");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
 const NodeCache = require("node-cache");
+const request = require("request");
+const rp = require("request-promise");
+const md5 = require("md5");
 
-const cache = new NodeCache({ stdTTL: 20, checkperiod: 24 });
+const cache = new NodeCache({ stdTTL: 500, checkperiod: 600 });
 
 const marvelKeys = JSON.parse(fs.readFileSync("keys/keys.json")).keys;
-
-var marvel = api.createClient({
-  publicKey: marvelKeys.public,
-  privateKey: marvelKeys.private
-});
 
 const app = express();
 app.use(bodyParser.json());
 app.use(pino);
 
 app.get("/api/character", (req, res) => {
-  const name = req.query.name || "spider-man";
-  marvel.characters
-    .findByName(name)
+  const name = req.query.name || "spider man";
+  rp.get(
+    `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${name}&orderBy=onsaleDate&limit=10&apikey=${
+      marvelKeys.public
+    }&hash=${md5(
+      new Date() + marvelKeys.private + marvelKeys.public
+    )}&ts=${new Date()}`
+  )
     .then(response => {
       if (cache.get(name)) {
         return Promise.resolve(response); // retrieve cached response
@@ -31,8 +33,9 @@ app.get("/api/character", (req, res) => {
       }
     })
     .then(results => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(results));
+      res.send(results);
     })
     .done();
 });
