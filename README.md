@@ -13,6 +13,17 @@ $ cd marvel-react
 $ npm install
 ```
 
+API keys will need to be set up in keys/keys.json with the following structure:
+
+```json
+{
+  "keys": {
+    "public": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "private": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+}
+```
+
 #### To run
 
 ```sh
