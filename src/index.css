@@ -20,7 +20,7 @@ img.media-object {
 
 .comic-detail {
   float: left;
-  height: 800px;
+  height: 900px;
 }
 
 .embed-responsive {
@@ -30,4 +30,9 @@ img.media-object {
 .search-bar input {
   width: 65%;
   margin: 10px
+}
+
+.list-group {
+  height: 900px;
+  overflow: scroll;
 }

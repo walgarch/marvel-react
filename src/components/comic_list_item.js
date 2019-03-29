@@ -10,7 +10,7 @@ const ComicListItem = ({ comic, onComicSelect }) => {
           <img className="media-object" src={imageUrl} />
         </div>
         <div className="media-body">
-          <div className="media-heading">{comic.title}</div>
+          <h5 className="media-heading">{comic.title}</h5>
         </div>
       </div>
     </li>

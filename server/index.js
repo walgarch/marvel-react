@@ -15,10 +15,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(pino);
 
-app.get("/api/character", (req, res) => {
-  const name = req.query.name || "spider man";
+app.get("/api/comic", (req, res) => {
+  const name = req.query.name || "thor";
   rp.get(
-    `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${name}&orderBy=onsaleDate&limit=10&apikey=${
+    `https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=${name}&orderBy=onsaleDate&limit=10&hasDigitalIssue=true&apikey=${
       marvelKeys.public
     }&hash=${md5(
       new Date() + marvelKeys.private + marvelKeys.public
@@ -26,10 +26,10 @@ app.get("/api/character", (req, res) => {
   )
     .then(response => {
       if (cache.get(name)) {
-        return Promise.resolve(response); // retrieve cached response
+        return Promise.resolve(cache.get(name)); // retrieve cached response
       } else {
         cache.set(name, response); // save reponse to cache and return response
-        return response;
+        return Promise.resolve(cache.get(name));
       }
     })
     .then(results => {

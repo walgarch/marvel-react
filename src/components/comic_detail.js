@@ -14,7 +14,8 @@ const ComicDetail = ({ comic }) => {
         <iframe className="embed-responsive-item" src={url} />
       </div>
       <div className="details">
-        <div>{comic.title}</div>
+        <hr />
+        <h2>{comic.title}</h2>
         <div>{comic.description}</div>
       </div>
     </div>

@@ -14,11 +14,11 @@ class App extends Component {
       selectedComic: null
     };
 
-    this.comicSearch("hulk");
+    this.comicSearch("Thor");
   }
 
   comicSearch(term) {
-    fetch(`http://localhost:3001/api/character?name=${term}`)
+    fetch(`http://localhost:3001/api/comic?name=${term}`)
       .then(response => {
         return response.json();
       })
